@@ -1,0 +1,141 @@
+﻿@page "/"
+@using Car_Rental.Common.Enums;
+@using Car_Rental.Common.Interfaces;
+@using Car_Rental.Business.Classes;
+@inject BookingProcessor bp
+
+
+
+<PageTitle>Car Rantal</PageTitle>
+<h1>Car Rental</h1>
+
+
+<div class="input-group mb-3" style="width: 250px">
+    <label class="input-group-text">Filter</label>
+    <select class="form-select" @bind="bp.Filter">
+        <option value="" selected>View All</option>
+        @foreach(var status in bp.VehicleStatus)
+        {
+            <option value="@status">@Enum.GetName(status)</option>
+        }
+    </select>
+</div>
+
+<div class="row">
+    <table class="table table-borderless border border-dark" style="max-width: 60%">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">RegNo</th>
+                <th scope="col">Make</th>
+                <th scope="col">Odometer</th>
+                <th scope="col">Cost Km</th>
+                <th scope="col">Vehicle Type</th>
+                <th scope="col">$ day</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var vehicle in bp.GetVehicles(bp.Filter))
+            {
+                <tr>
+                    <th scope="row">@vehicle.RegNo</th>
+                    <td>@vehicle.Make</td>
+                    <td>@vehicle.Odometer</td>
+                    <td>@vehicle.CostKm</td>
+                    <td>@vehicle.Type</td>
+                    <td>@vehicle.CostDay</td>
+                    <td>
+                        @if (vehicle.Status.Equals(VehicleStatuses.Available))
+                        {
+                            <span class="badge bg-success">Available</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Booked</span>
+                        }                        
+                    </td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+<div class="row">
+    <table class="table border border-dark" style="max-width: 60%">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">RegNo</th>
+                <th scope="col">Costumer</th>
+                <th scope="col">Km Rented</th>
+                <th scope="col">Km Returned</th>
+                <th scope="col">Rented</th>
+                <th scope="col">Returned</th>
+                <th scope="col">Cost</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var booking in bp.GetBookings())
+            {
+                if (booking.RentalStatus)
+                {
+                    <tr>
+                        <th scope="row">@booking.Vehicle.RegNo</th>
+                        <td>@booking.Customer.CustomerInformation</td>
+                        <td>@booking.OdometerBeforeRent</td>
+                        <td></td>
+                        <td>@booking.DayOfRent.ToString("MM/dd/yyyy")</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <span class="badge bg-danger">Open</span>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <th scope="row">@booking.Vehicle.RegNo</th>
+                        <td>@booking.Customer.CustomerInformation</td>
+                        <td>@booking.OdometerBeforeRent</td>
+                        <td>@booking.Vehicle.Odometer</td>
+                        <td>@booking.DayOfRent.ToString("MM/dd/yyyy")</td>
+                        <td>@booking.DayOfReturn.ToString("MM/dd/yyyy")</td>
+                        <td>@booking.Cost</td>
+                        <td>
+                            <span class="badge bg-success">Closed</span>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+<div class="row">
+    <table class="table table-borderless border border-dark" style="width: 500px">
+        <thead class="table-dark">
+            <tr>
+                <th>SSN</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in bp.GetCustomers())
+            {
+                <tr>
+                    <th scope="row">@customer.SocialSecurityNumber</th>
+                    <td>@customer.LastName</td>
+                    <td>@customer.FirstName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
