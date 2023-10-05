@@ -10,14 +10,15 @@ public class CollectionData : IData
     readonly List<IVehicle> _vehicles = new List<IVehicle>();
     readonly List<IBooking> _bookings = new List<IBooking>();
 
+
     public int NextVehicleId => throw new NotImplementedException();
 
     public int NextPersonId => throw new NotImplementedException();
 
     public int NextBookingId => throw new NotImplementedException();
 
-    public CollectionData() => SeedData();
 
+    public CollectionData() => SeedData();
     void SeedData()
     {
         Customer customer1 = new("Alex", "Smith", 12345);
@@ -25,15 +26,15 @@ public class CollectionData : IData
         Customer customer3 = new("Jane", "Carlsson", 92345);
 
 
-        Car car1 = new("ABC123", "Volvo", 10000, 1, 200, VehicleStatuses.Available, VehicleTypes.Combi);
-        Car car2 = new("DEF456", "Saab", 22000, 1, 100, VehicleStatuses.Available, VehicleTypes.Combi);
-        Car car3 = new("GHI789", "Tesla", 2000, 3, 300, VehicleStatuses.Available, VehicleTypes.Sedan);
-        Car car4 = new("JKL321", "Jeep", 5000, 1.5, 300, VehicleStatuses.Available, VehicleTypes.Van);
-        Motorcycle motorcycle = new("Yamaha", "MNO654", 6000, 1, 200, VehicleStatuses.Available, VehicleTypes.Motorcycle);
+        Car car1 = new("Volvo", "ABC123" , 10000, 1, VehicleStatuses.Available, VehicleTypes.Combi);
+        Car car2 = new("Saab", "DEF456", 22000, 1, VehicleStatuses.Available, VehicleTypes.Combi);
+        Car car3 = new("Tesla", "GHI789", 2000, 3, VehicleStatuses.Available, VehicleTypes.Sedan);
+        Car car4 = new("Jeep", "JKL321", 5000, 1.5, VehicleStatuses.Available, VehicleTypes.Van);
+        Motorcycle motorcycle = new("Yamaha", "MNO654", 6000, 1, VehicleStatuses.Available, VehicleTypes.Motorcycle);
 
-        Booking bookning1 = new(customer2, car4);
-        Booking bookning2 = new(customer1, car3);
-        Booking bookning3 = new(customer3, car1);
+        Booking booking1 = new(customer2, car4);
+        Booking booking2 = new(customer1, car3);
+        Booking booking3 = new(customer3, car1);
 
         _persons.Add(customer1);
         _persons.Add(customer2);
@@ -45,19 +46,20 @@ public class CollectionData : IData
         _vehicles.Add(car4);
         _vehicles.Add(motorcycle);
 
-        _bookings.Add(bookning1);
-        _bookings.Add(bookning2);
-        _bookings.Add(bookning3);
+        _bookings.Add(booking1);
+        _bookings.Add(booking2);
+        _bookings.Add(booking3);
 
-        bookning1.ReturnVehicle(car4, 0);
-        bookning3.ReturnVehicle(car1, 50);
+        booking1.ReturnVehicle(car4, 0);
+        booking3.ReturnVehicle(car1, 50);
 
     }
     public IEnumerable<IBooking> GetBooking() => _bookings;
 
     public IEnumerable<IPerson> GetPersons() => _persons;
-
     public IEnumerable<IVehicle> GetVehicles(VehicleStatuses status = default) => _vehicles;
+
+
 
     public List<T> Get<T>(Expression<Func<T, bool>>? expression)
     {

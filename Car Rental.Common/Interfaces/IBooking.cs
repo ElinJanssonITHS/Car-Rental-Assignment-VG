@@ -11,6 +11,7 @@ public interface IBooking
     double Cost { get; }
     bool RentalStatus { get; }
 
+
     void ReturnVehicle(IVehicle vehicle, double kmDriven);
 
 }

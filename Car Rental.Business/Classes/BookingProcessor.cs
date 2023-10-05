@@ -21,15 +21,13 @@ public class BookingProcessor
             return _db.GetVehicles();
         }
         return _db.GetVehicles().Where(v => v.Status.Equals(status));
-
-
     }
     public IEnumerable<IBooking> GetBookings()
     {
         return _db.GetBooking().OrderBy(b => b.RentalStatus);
     }
 
-    //public asynktron retur-datatyp RentVehicle(int vehicleID, int custumerID) { }
+    //public async Task<IBooking> RentVehicle(int vehicleId, int custumerId) { }
 
     /*Vehicle*/
     //public IVehicle? GetVehicle(int vehicleId) { }

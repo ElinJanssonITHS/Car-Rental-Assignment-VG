@@ -16,7 +16,7 @@ public class Booking : IBooking
 
 
 
-
+    
     public Booking(IPerson customer, IVehicle vehicle)
     {
         Customer = customer;
