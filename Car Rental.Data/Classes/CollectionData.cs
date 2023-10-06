@@ -2,6 +2,8 @@
 using Car_Rental.Common.Interfaces;
 using Car_Rental.Common.Classes;
 using System.Linq.Expressions;
+using System.Linq;
+using System.Reflection;
 
 namespace Car_Rental.Data.Classes;
 public class CollectionData : IData
@@ -60,13 +62,31 @@ public class CollectionData : IData
     public IEnumerable<IVehicle> GetVehicles(VehicleStatuses status = default) => _vehicles;
 
 
-
     public List<T> Get<T>(Expression<Func<T, bool>>? expression)
     {
-        throw new NotImplementedException();
-    }
+        string fieldName = $"_{typeof(T).Name}s";
+        FieldInfo fieldInfo = GetType().GetField(typeof(T).Name, BindingFlags.Instance | BindingFlags.NonPublic);
 
-    public T? Singel<T>(Expression<Func<T, bool>>? expression)
+        if (fieldInfo != null)
+        {
+            var list = (IEnumerable<T>)fieldInfo.GetValue(this);
+
+            if (expression != null)
+            {
+                list = list.Where(expression.Compile());
+            }
+
+            return list.ToList();
+        }
+
+        throw new ArgumentException($"Cannot get {typeof(T)}");
+    }
+/*    public List<T> Get<T>(Expression<Func<T, bool>>? expression)
+    {
+        throw new NotImplementedException();
+    }*/
+
+public T? Singel<T>(Expression<Func<T, bool>>? expression)
     {
         throw new NotImplementedException();
     }

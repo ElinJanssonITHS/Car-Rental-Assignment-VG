@@ -9,7 +9,7 @@ public interface IVehicle
     double Odometer { get; }
     VehicleTypes Type { get; }
     double CostKm { get; }
-    double CostDay { get; }
+    double CostDay => (int)Type;
     VehicleStatuses Status { get; }
     void ChangeStatus(VehicleStatuses status);
     void UpdateOdometer(double km);

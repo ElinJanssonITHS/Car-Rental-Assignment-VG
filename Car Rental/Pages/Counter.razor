@@ -1,18 +1,56 @@
 ﻿@page "/counter"
+@using System.Linq.Expressions;
+@using System.Reflection;
 
 <PageTitle>Counter</PageTitle>
 
-<h1>Counter</h1>
 
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    List<string> test1 = new();
+    List<int> test2 = new();
+    List<Person> test3 = new();
+    protected override void OnInitialized()
     {
-        currentCount++;
+        test3.Add(new Person("ELin"));
+        test3.Add(new Person("Alex"));
+        test3.Add(new Person("Miso"));
+
+        test1.Add("Elin");
+        test1.Add("Alex");
+        test1.Add("Miso");
+
+        test2.Add(1);
+        test2.Add(2);
+        test2.Add(3);
+
+
+    }
+    public List<T> Get<T>(Expression<Func<T, bool>>? expression)
+    {
+        string fieldName = $"_{typeof(T).Name}s";
+        FieldInfo fieldInfo = GetType().GetField(typeof(T).Name, BindingFlags.Instance | BindingFlags.NonPublic);
+
+        if (fieldInfo != null)
+        {
+            var list = (IEnumerable<T>)fieldInfo.GetValue(this);
+
+            if (expression != null)
+            {
+                list = list.Where(expression.Compile());
+            }
+
+            return list.ToList();
+        }
+
+        throw new ArgumentException($"Cannot get {typeof(T)}");
+    }
+
+
+    public class Person
+    {
+        public string Name = string.Empty;
+        public Person(string name) => (Name) = (name);
+
     }
 }
