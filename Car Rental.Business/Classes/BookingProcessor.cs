@@ -44,11 +44,23 @@ public class BookingProcessor
 
     public void AddVehicle(string make, string registrationNumber, double odometer, double costKm, VehicleStatuses status, VehicleTypes type) 
     {
-        if(type == VehicleTypes.Motorcycle)
+        ErrorMessage = string.Empty;
+
+        if (make == default || make.Trim().Length.Equals(0) || registrationNumber == default || registrationNumber.Trim().Length.Equals(0) ||
+            odometer == default || costKm == default || type == default)
         {
-            _db.Add<IVehicle>(new Motorcycle(_db.NextVehicleId, make, registrationNumber, odometer, costKm, status, type));
+            ErrorMessage = "Could not add vehicle.";
         }
-        _db.Add<IVehicle>(new Car(_db.NextVehicleId, make, registrationNumber, odometer, costKm, status, type));
+        else
+        {
+            if (type == VehicleTypes.Motorcycle)
+            {
+                _db.Add<IVehicle>(new Motorcycle(_db.NextVehicleId, make, registrationNumber.ToUpper(), odometer, costKm, status, type));
+            }
+            _db.Add<IVehicle>(new Car(_db.NextVehicleId, make, registrationNumber.ToUpper(), odometer, costKm, status, type));
+        }
+
+        NewRegNo = string.Empty; NewMake = string.Empty; NewOdometer = default; NewCostKm = default; NewType = default;
     }
 
     /*Bookings*/
@@ -58,11 +70,20 @@ public class BookingProcessor
     public IPerson? GetPerson(string ssn) => _db.Single<IPerson>(p => p.SocialSecurityNumber.Equals(ssn));
     public void AddCustomer(string firstName, string lastName, string socialSecurityNumber) 
     {
-        _db.Add<IPerson>(new Customer(_db.NextPersonId, firstName, lastName, socialSecurityNumber));
+        ErrorMessage = string.Empty;
+
+        if (firstName == default || firstName.Trim().Length.Equals(0) || lastName == default || lastName.Trim().Length.Equals(0) || 
+            socialSecurityNumber == default || socialSecurityNumber.Trim().Length.Equals(0))
+        {
+            ErrorMessage = "Could not add customer.";
+        }
+        else
+        {
+            _db.Add<IPerson>(new Customer(_db.NextPersonId, firstName, lastName, socialSecurityNumber));
+        }
+
+        NewFirstName = string.Empty; NewLastName = string.Empty; NewSSN = string.Empty;
     }
-
-
-
     public string[] VehicleStatusNames => _db.VehicleStatusNames;
     public string[] VehicleTypeNames => _db.VehicleTypeNames;
     public VehicleTypes GetVehicleType(string name) => _db.GetVehicleType(name);

@@ -59,7 +59,7 @@ public class CollectionData : IData
         {
             var list = (List<T>)fieldInfo.GetValue(this);
 
-            if (expression != null)
+            if (expression is not null)
             {
                 list = list.Where(expression.Compile()).ToList();
             }
@@ -72,15 +72,15 @@ public class CollectionData : IData
     {
         FieldInfo fieldInfo = GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic).FirstOrDefault(f => f.FieldType == typeof(List<T>));
 
-        if (fieldInfo != null)
+        if (fieldInfo is not null)
         {
             var list = (List<T>)fieldInfo.GetValue(this);
 
-            if (expression != null)
+            if (expression is not null)
             {
                 var item = list.SingleOrDefault(expression.Compile());
 
-                if (item != null)
+                if (item is not null)
                 {
                     return item;
                 }
@@ -94,10 +94,10 @@ public class CollectionData : IData
     public void Add<T>(T item)
     {
         FieldInfo fieldInfo = GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic).FirstOrDefault(f => f.FieldType == typeof(List<T>));
-        if (fieldInfo != null)
+        if (fieldInfo is not null)
         {
             var list = (List<T>)fieldInfo.GetValue(this);
-            if(item != null)
+            if(item is not null)
             {
                 list.Add(item);
             }
