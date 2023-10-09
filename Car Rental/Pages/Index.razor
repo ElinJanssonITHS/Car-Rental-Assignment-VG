@@ -8,16 +8,19 @@
 
 <PageTitle>Car Rantal</PageTitle>
 <h1>Car Rental</h1>
-
+@* @if (error != string.Empty)
+{
+    <div class="mb-4 alert alert-danger">
+        <strong>Error</strong> @error
+    </div>
+} *@
 
 <div class="input-group mb-3" style="width: 250px">
     <label class="input-group-text">Filter</label>
     <select class="form-select" @bind="bp.Filter">
         <option value="" selected>View All</option>
-        @foreach(var status in bp.VehicleStatus)
-        {
-            <option value="@status">@Enum.GetName(status)</option>
-        }
+        <option value="@VehicleStatuses.Available">Available</option>
+        <option value="@VehicleStatuses.Booked">Booked</option>
     </select>
 </div>
 
@@ -25,16 +28,37 @@
     <table class="table table-borderless border border-dark" style="max-width: 60%">
         <thead class="table-dark">
             <tr>
-                <th scope="col">RegNo</th>
+                <th value="reNo" scope="col">RegNo</th>
                 <th scope="col">Make</th>
                 <th scope="col">Odometer</th>
                 <th scope="col">Cost Km</th>
                 <th scope="col">Vehicle Type</th>
                 <th scope="col">$ day</th>
+                <th scope="col">Action</th>
                 <th scope="col">Status</th>
             </tr>
         </thead>
         <tbody>
+            <tr >
+                <th><input class="form-control" placeholder="RegNo"/></th>
+                <th><input type="text" class="form-control" placeholder="Make" /></th>
+                <th><input type="text" class="form-control" /></th>
+                <th><input type="text" class="form-control" /></th>
+                <th>
+                    <select class="form-select">
+                        <option value="" selected></option>
+                        @foreach(var type in bp.VehicleTypeNames)
+                        {
+                            <option value="">@type</option>
+                        }
+                    </select>
+                </th>
+                <th></th>
+                <th>
+                    <button class="btn btn-outline-success btn-padding">Add</button>
+                </th>
+                <th></th>
+            </tr>
             @foreach(var vehicle in bp.GetVehicles(bp.Filter))
             {
                 <tr>

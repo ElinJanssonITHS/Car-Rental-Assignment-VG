@@ -1,56 +1,34 @@
 ﻿@page "/counter"
 @using System.Linq.Expressions;
 @using System.Reflection;
+@using Car_Rental.Common.Enums;
+@using Car_Rental.Common.Interfaces;
+@using Car_Rental.Business.Classes;
+@inject BookingProcessor bp
 
 <PageTitle>Counter</PageTitle>
+@* <ul class="list-group mb-3">
+    @foreach (var test in bp.GetVehicles())
+    {
+        <li>@test.Make</li>
+    }
+</ul> *@
+
+@* <ul>
+    
+    <li>@bp.GetVehicle(1)?.Make</li>
+    <li>@bp.GetVehicle("ABC123")?.Make</li>
+    <li>@bp.GetPerson("12345")?.FirstName</li>
+    <li>@bp.GetPerson("98765")?.FirstName</li>
+    <li>@bp.GetPerson("92345")?.FirstName</li>
+</ul> *@
 
 
 
 @code {
-    List<string> test1 = new();
-    List<int> test2 = new();
-    List<Person> test3 = new();
     protected override void OnInitialized()
     {
-        test3.Add(new Person("ELin"));
-        test3.Add(new Person("Alex"));
-        test3.Add(new Person("Miso"));
-
-        test1.Add("Elin");
-        test1.Add("Alex");
-        test1.Add("Miso");
-
-        test2.Add(1);
-        test2.Add(2);
-        test2.Add(3);
-
-
-    }
-    public List<T> Get<T>(Expression<Func<T, bool>>? expression)
-    {
-        string fieldName = $"_{typeof(T).Name}s";
-        FieldInfo fieldInfo = GetType().GetField(typeof(T).Name, BindingFlags.Instance | BindingFlags.NonPublic);
-
-        if (fieldInfo != null)
-        {
-            var list = (IEnumerable<T>)fieldInfo.GetValue(this);
-
-            if (expression != null)
-            {
-                list = list.Where(expression.Compile());
-            }
-
-            return list.ToList();
-        }
-
-        throw new ArgumentException($"Cannot get {typeof(T)}");
-    }
-
-
-    public class Person
-    {
-        public string Name = string.Empty;
-        public Person(string name) => (Name) = (name);
-
+        bp.AddCustomer("Elin", "Jansson", "90103");
+        bp.AddVehicle("Honda", "456QWE", 13000, 1, VehicleStatuses.Available, VehicleTypes.Combi);
     }
 }

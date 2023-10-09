@@ -5,12 +5,8 @@ namespace Car_Rental.Common.Interfaces;
 
 public interface IData
 {
-    IEnumerable<IPerson> GetPersons();
-    IEnumerable<IVehicle> GetVehicles(VehicleStatuses status = default);
-    IEnumerable<IBooking> GetBooking();
-
     List<T> Get<T>(Expression<Func<T, bool>>? expression);
-    T? Singel<T>(Expression<Func<T, bool>>? expression);
+    T? Single<T>(Expression<Func<T, bool>>? expression);
     public void Add<T>(T item);
 
     int NextVehicleId { get; }
@@ -23,4 +19,10 @@ public interface IData
     public string[] VehicleStatusNames => Enum.GetNames(typeof(VehicleStatuses));
     public string[] VehicleTypeNames => Enum.GetNames(typeof(VehicleTypes));
     public VehicleTypes GetVehicleType(string name) => (VehicleTypes)Enum.Parse(typeof(VehicleTypes), name);
+
+
+
+    /*IEnumerable<IPerson> GetPersons();
+    IEnumerable<IVehicle> GetVehicles(VehicleStatuses status = default);
+    IEnumerable<IBooking> GetBooking();*/
 }

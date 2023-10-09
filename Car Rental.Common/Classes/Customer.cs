@@ -4,15 +4,13 @@ namespace Car_Rental.Common.Classes;
 
 public class Customer : IPerson
 {
-    private string _firstName;
-    private string _lastName;
-    private int _socialSecurityNumber;
-    public string FirstName => _firstName;
-    public string LastName => _lastName;
-    public int SocialSecurityNumber => _socialSecurityNumber;
+    public int Id { get; init; }
+    public string FirstName {get; init;}
+    public string LastName { get; private set; }
+    public string SocialSecurityNumber { get; init;}
     public string CustomerInformation => $"{LastName} {FirstName} ({SocialSecurityNumber})";
-    public Customer(string firstName, string lastName, int socialSecurityNumber)
-        => (_firstName, _lastName, _socialSecurityNumber) = (firstName, lastName, socialSecurityNumber);
+    public Customer(int id, string firstName, string lastName, string socialSecurityNumber)
+        => (Id, FirstName, LastName, SocialSecurityNumber) = (id, firstName, lastName, socialSecurityNumber);
 
 
 }

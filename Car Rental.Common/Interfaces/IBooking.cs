@@ -3,6 +3,7 @@ namespace Car_Rental.Common.Interfaces;
 
 public interface IBooking
 {
+    int Id { get; }
     IPerson Customer { get; init; }
     IVehicle Vehicle { get; init; }
     DateTime DayOfRent { get; init; }

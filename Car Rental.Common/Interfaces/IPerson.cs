@@ -2,9 +2,10 @@
 {
     public interface IPerson
     {
+        int Id { get; }
         string FirstName { get; }
         string LastName { get; }
-        int SocialSecurityNumber { get; }
+        string SocialSecurityNumber { get; }
         string CustomerInformation { get; }
     }
 }
