@@ -40,12 +40,12 @@
         </thead>
         <tbody>
             <tr>
-                <td><input type="text" class="form-control-sm" placeholder="RegNo" @bind="bp.NewRegNo"/></td>
-                <td><input type="text" class="form-control-sm" placeholder="Make" @bind="bp.NewMake"/></td>
-                <td><input type="text" class="form-control-sm" @bind="bp.NewOdometer" /></td>
-                <td><input type="text" class="form-control-sm" @bind="bp.NewCostKm" /></td>
+                <td><input type="text" class="form-control-sm" placeholder="RegNo" @bind="bp.NewVehicle.RegNo"/></td>
+                <td><input type="text" class="form-control-sm" placeholder="Make" @bind="bp.NewVehicle.Make"/></td>
+                <td><input type="text" class="form-control-sm" @bind="bp.NewVehicle.Odometer" /></td>
+                <td><input type="text" class="form-control-sm" @bind="bp.NewVehicle.CostKm" /></td>
                 <td>
-                    <select class="form-select border border-dark" @bind="bp.NewType">
+                    <select class="form-select border border-dark" @bind="bp.NewVehicle.Type">
                         <option value="" selected></option>
                         @foreach(var type in bp.VehicleTypeNames)
                         {
@@ -53,9 +53,9 @@
                         }
                     </select>
                 </td>
-                <td>@((int)bp.NewType)</td>
+                <td>@((int)bp.NewVehicle.Type)</td>
                 <td>
-                    <button class="btn btn-sm btn-outline-success align-self-stretch" @onclick="() =>bp.AddVehicle(bp.NewMake,bp.NewRegNo,bp.NewOdometer,bp.NewCostKm,VehicleStatuses.Available,bp.NewType)">Add</button>
+                    <button class="btn btn-sm btn-outline-success align-self-stretch" @onclick="() =>bp.AddVehicle(bp.NewVehicle.Make,bp.NewVehicle.RegNo,bp.NewVehicle.Odometer,bp.NewVehicle.CostKm,VehicleStatuses.Available,bp.NewVehicle.Type)">Add</button>
                 </td>
                 <td><span class="badge bg-success">Available</span></td>
             </tr>
@@ -68,7 +68,29 @@
                     <td>@vehicle.CostKm</td>
                     <td>@vehicle.Type</td>
                     <td>@vehicle.CostDay</td>
-                    <td></td>
+                    <td>
+                        @if (vehicle.Status.Equals(VehicleStatuses.Available))
+                        {
+                            <div class="input-group-sm">
+                                <select class="form-select border border-dark" id="inputGroupSelect04" @bind="bp.NewCustomer.Id">
+                                    <option value="" selected></option>
+                                    @foreach (var customer in bp.GetCustomers())
+                                    {
+                                        <option value="@bp.NewCustomer.Id">@customer.CustomerInformation</option>
+                                    }
+                                </select>
+                                <button class="btn btn-sm btn-outline-primary" type="button" @onclick="()=> bp.RentVehicleAsync(vehicle.Id, bp.NewCustomer.Id)">Rent</button>
+                            </div>                           
+                        }
+                        else
+                        {
+                            <div class="input-group-sm">
+                                <input type="text" class="form-control-sm" aria-describedby="button-addon" @bind="bp.NewBooking.Distance" />
+                                <button class="btn btn-sm btn-outline-success" id="button-addon" @onclick="()=> bp.ReturnVehicle(vehicle.Id, bp.NewBooking.Distance)">Return</button>
+                            </div>                       
+                        }
+                                              
+                    </td>
                     <td>
                         @if (vehicle.Status.Equals(VehicleStatuses.Available))
                         {
@@ -154,11 +176,11 @@
         </thead>
         <tbody>
             <tr>
-                <td><input type="text" class="form-control-sm" placeholder="SSN" @bind="bp.NewSSN" /></td>
-                <td><input type="text" class="form-control-sm" placeholder="Last Name" @bind="bp.NewLastName" /></td>
-                <td><input type="text" class="form-control-sm" placeholder="First Name" @bind="bp.NewFirstName" /></td>
+                <td><input type="text" class="form-control-sm" placeholder="YYMMDD" @bind="bp.NewCustomer.SocialSecurityNumber" /></td>
+                <td><input type="text" class="form-control-sm" placeholder="Last Name" @bind="bp.NewCustomer.LastName" /></td>
+                <td><input type="text" class="form-control-sm" placeholder="First Name" @bind="bp.NewCustomer.FirstName" /></td>
                 <td>
-                    <button class="btn btn-sm btn-outline-success" @onclick="() =>bp.AddCustomer(bp.NewFirstName, bp.NewLastName, bp.NewSSN)">Add</button>
+                    <button class="btn btn-sm btn-outline-success" @onclick="() =>bp.AddCustomer(bp.NewCustomer.FirstName, bp.NewCustomer.LastName, bp.NewCustomer.SocialSecurityNumber)">Add</button>
                 </td>
             </tr>
             @foreach (var customer in bp.GetCustomers())

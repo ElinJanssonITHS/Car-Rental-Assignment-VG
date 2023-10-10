@@ -4,6 +4,7 @@ using Car_Rental.Common.Classes;
 using System.Linq.Expressions;
 using System.Linq;
 using System.Reflection;
+using Car_Rental.Common.Extensions;
 
 namespace Car_Rental.Data.Classes;
 public class CollectionData : IData
@@ -19,9 +20,9 @@ public class CollectionData : IData
     public CollectionData() => SeedData();
     void SeedData()
     {
-        Customer customer1 = new(1, "Alex", "Smith", "12345");
-        Customer customer2 = new(2, "Sandra", "Smith", "98765");
-        Customer customer3 = new(3, "Jane", "Carlsson", "92345");
+        Customer customer1 = new(1, "Alex", "Smith", "700101");
+        Customer customer2 = new(2, "Sandra", "Smith", "980210");
+        Customer customer3 = new(3, "Jane", "Carlsson", "920605");
 
         Car car1 = new(1, "Volvo", "ABC123" , 10000, 1, VehicleStatuses.Available, VehicleTypes.Combi);
         Car car2 = new(2, "Saab", "DEF456", 22000, 1, VehicleStatuses.Available, VehicleTypes.Combi);
@@ -48,7 +49,8 @@ public class CollectionData : IData
         _bookings.Add(booking3);
 
         booking1.ReturnVehicle(car4, 0);
-        booking3.ReturnVehicle(car1, 50);
+        ReturnVehicle(booking3.Vehicle.Id, 50);
+        //booking3.ReturnVehicle(car1, 50);
 
     }
 
@@ -103,7 +105,7 @@ public class CollectionData : IData
             }
             else
             {
-                throw new ArgumentNullException($"Could not add null element of type {typeof(T)}.");
+                throw new ArgumentNullException($"Could not add null element");
             }
         }
         else
@@ -114,12 +116,23 @@ public class CollectionData : IData
 
     public IBooking RentVehicle(int vehicleId, int custumerId)
     {
+
         throw new NotImplementedException();
     }
 
-    public IBooking ReturnVehicle(int vehicleId)
+    public IBooking ReturnVehicle(int vehicleId, double distance)
     {
-        throw new NotImplementedException();
+        var booking = _bookings.SingleOrDefault(b => b.Vehicle.Id.Equals(vehicleId));
+        if (booking is not null)
+        {
+            Common.Extensions.CollectionExtensions.Return(booking, distance);
+            return booking;
+        }
+        else
+        {
+            throw new Exception("Cannot find booking");
+        }
+        
     }
 
     /*public IEnumerable<IBooking> GetBooking() => _bookings;
