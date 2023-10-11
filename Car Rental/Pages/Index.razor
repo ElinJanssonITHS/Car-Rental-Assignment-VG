@@ -76,17 +76,17 @@
                                     <option value="" selected></option>
                                     @foreach (var customer in bp.GetCustomers())
                                     {
-                                        <option value="@bp.NewCustomer.Id">@customer.CustomerInformation</option>
+                                        <option value="@customer.Id">@customer.CustomerInformation</option>
                                     }
                                 </select>
-                                <button class="btn btn-sm btn-outline-primary" type="button" style="min-width: 3vW" @onclick="()=> bp.RentVehicleAsync(vehicle.Id, bp.NewCustomer.Id)">Rent</button>
+                                <button class="btn btn-sm btn-outline-primary" type="button" style="min-width: 3vW" @onclick="()=> bp.RentVehicle(vehicle.Id, bp.NewCustomer.Id)">Rent</button>
                             </div>                           
                         }
                         else
                         {
-                            <div class="input-group-sm d-flex">
-                                <input type="text" class="form-control-sm" aria-describedby="button-addon" @bind="bp.NewBooking.Distance" />
-                                <button class="btn btn-sm btn-outline-success" id="button-addon" style="min-width: 3vW" @onclick="()=> bp.ReturnVehicle(vehicle.Id, bp.NewBooking.Distance)">Return</button>
+                            <div class="input-group-sm d-flex">                              
+                                <input type="text" class="form-control-sm" @bind="bp.NewBooking.Distance" />
+                                <button class="btn btn-sm btn-outline-success" style="min-width: 3vW" @onclick="()=> bp.ReturnVehicle(vehicle.Id, bp.NewBooking.Distance)">Return</button>
                             </div>                       
                         }
                                               

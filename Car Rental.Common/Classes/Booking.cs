@@ -5,10 +5,11 @@ namespace Car_Rental.Common.Classes;
 
 public class Booking : IBooking
 {
+    #region Properties
     private int _daysRented;
     public int Id { get; init; }
     public IPerson Customer { get; init; }
-    public IVehicle Vehicle { get; init; }
+    public IVehicle Vehicle { get; set; }
     public string RegNr { get; init; }
     public DateTime DayOfRent { get; init; }
     public DateTime DayOfReturn { get; set; }
@@ -16,10 +17,10 @@ public class Booking : IBooking
     public double OdometerBeforeRent { get; init; }
     public double Cost { get; set; }
     public bool RentalStatus { get; set; }
+    #endregion
 
-
+    #region Constructors
     public Booking() { }
-    
     public Booking(int id, IPerson customer, IVehicle vehicle)
     {
         Id = id;
@@ -31,7 +32,10 @@ public class Booking : IBooking
         vehicle.ChangeStatus(VehicleStatuses.Booked);
         RentalStatus = true;
     }
-    public void ReturnBooking (Booking booking)
+    #endregion
+
+    #region Methods
+    public void ReturnBooking(Booking booking)
     {
         booking.Vehicle.ChangeStatus(VehicleStatuses.Available);
         booking.DayOfReturn = DateTime.Now;
@@ -47,5 +51,5 @@ public class Booking : IBooking
         RentalStatus = false;
         return Vehicle;
     }
-
+    #endregion
 }

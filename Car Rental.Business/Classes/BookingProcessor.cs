@@ -12,6 +12,7 @@ public class BookingProcessor
     public Customer NewCustomer = new();
     public Booking NewBooking = new();
 
+
     private readonly IData _db;
 
     public BookingProcessor(IData db) => _db = db;
@@ -33,10 +34,16 @@ public class BookingProcessor
         return _db.Get<IBooking>(null).OrderBy(b => b.RentalStatus);
     }
 
-    public async Task<IBooking> RentVehicleAsync(int vehicleId, int custumerId)
+    public void RentVehicle(int vehicleId, int custumerId) //TEMP
+    {
+        IBooking booking = _db.RentVehicle(vehicleId, custumerId);
+        _db.Add<IBooking>(booking);
+    }
+
+    /*public async Task<IBooking> RentVehicle(int vehicleId, int custumerId)
     {
         return null;
-    }
+    }*/
 
     /*Vehicle*/
     public IVehicle? GetVehicle(int vehicleId) => _db.Single<IVehicle>(v => v.Id.Equals(vehicleId));
@@ -72,7 +79,8 @@ public class BookingProcessor
     /*Bookings*/
     public IBooking ReturnVehicle(int vehicleId, double distance)
     {
-        var booking = _db.ReturnVehicle(vehicleId, distance);
+        var booking = _db.ReturnVehicle(vehicleId);
+        BookingExtensions.Return(booking, distance);
         
         
         return booking; // temp
