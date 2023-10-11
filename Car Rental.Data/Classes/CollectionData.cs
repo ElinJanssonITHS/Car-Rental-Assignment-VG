@@ -23,7 +23,6 @@ public class CollectionData : IData
         Customer customer1 = new(1, "Alex", "Smith", "700101");
         Customer customer2 = new(2, "Sandra", "Smith", "980210");
         Customer customer3 = new(3, "Jane", "Carlsson", "920605");
-        Customer customer4 = new(4, "Elin", "Jansson", "990103");
 
         Car car1 = new(1, "Volvo", "ABC123" , 10000, 1, VehicleStatuses.Available, VehicleTypes.Combi);
         Car car2 = new(2, "Saab", "DEF456", 22000, 1, VehicleStatuses.Available, VehicleTypes.Combi);
@@ -34,12 +33,10 @@ public class CollectionData : IData
         Booking booking1 = new(1, customer2, car4);
         Booking booking2 = new(2, customer1, car3);
         Booking booking3 = new(3, customer3, car1);
-        Booking booking4 = new(4, customer4, car1);
 
         _persons.Add(customer1);
         _persons.Add(customer2);
         _persons.Add(customer3);
-        _persons.Add(customer4);
 
         _vehicles.Add(car1);
         _vehicles.Add(car2);
@@ -50,14 +47,9 @@ public class CollectionData : IData
         _bookings.Add(booking1);
         _bookings.Add(booking2);
         _bookings.Add(booking3);
-        Add<IBooking>(booking4);
 
-
-        booking1.ReturnVehicle(car4, 0);
-        //ReturnVehicle(booking3.Vehicle.Id, 50);
+        BookingExtensions.Return(booking1, 0);
         BookingExtensions.Return(booking3, 50);
-        //booking3.ReturnVehicle(car1, 50);
-
     }
 
     public List<T> Get<T>(Expression<Func<T, bool>>? expression) // Generisk metod Get<>(); KLAR
@@ -154,8 +146,4 @@ public class CollectionData : IData
             throw new Exception("Cannot find booking");
         }
     }
-
-    /*public IEnumerable<IBooking> GetBooking() => _bookings;
-    public IEnumerable<IPerson> GetPersons() => _persons;
-    public IEnumerable<IVehicle> GetVehicles(VehicleStatuses status = default) => _vehicles;*/
 }

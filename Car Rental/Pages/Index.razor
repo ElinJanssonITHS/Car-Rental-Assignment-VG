@@ -41,11 +41,11 @@
         <tbody>
             <tr>
                 <td><input type="text" class="form-control-sm" placeholder="RegNo" @bind="bp.NewVehicle.RegNo"/></td>
-                <td><input type="text" class="form-control-sm" placeholder="Make" @bind="bp.NewVehicle.Make"/></td>
+                <td><input type="text" class="form-control-sm" placeholder="Make" @bind="bp.NewVehicle.Make" /></td>
                 <td><input type="text" class="form-control-sm" @bind="bp.NewVehicle.Odometer" /></td>
                 <td><input type="text" class="form-control-sm" @bind="bp.NewVehicle.CostKm" /></td>
                 <td>
-                    <select class="form-select border border-dark" @bind="bp.NewVehicle.Type">
+                    <select class="form-select border border-dark" @bind="bp.NewVehicle.Type" >
                         <option value="" selected></option>
                         @foreach(var type in bp.VehicleTypeNames)
                         {
@@ -57,7 +57,11 @@
                 <td>
                     <button class="btn btn-sm btn-outline-success align-self-stretch" @onclick="() =>bp.AddVehicle(bp.NewVehicle.Make,bp.NewVehicle.RegNo,bp.NewVehicle.Odometer,bp.NewVehicle.CostKm,VehicleStatuses.Available,bp.NewVehicle.Type)">Add</button>
                 </td>
-                <td><span class="badge bg-success">Available</span></td>
+                <td>
+                    
+                    <span class="badge bg-warning">Processing</span>
+                                                                                
+                </td>
             </tr>
             @foreach(var vehicle in bp.GetVehicles(bp.Filter))
             {
@@ -79,7 +83,9 @@
                                         <option value="@customer.Id">@customer.CustomerInformation</option>
                                     }
                                 </select>
-                                <button class="btn btn-sm btn-outline-primary" type="button" style="min-width: 3vW" @onclick="()=> bp.RentVehicle(vehicle.Id, bp.NewCustomer.Id)">Rent</button>
+                                <button class="btn btn-sm btn-outline-primary" type="button" style="min-width: 3vW" @onclick="() => bp.RentVehicleAsync(vehicle.Id, bp.NewCustomer.Id)"                       >
+                                    Rent
+                                </button>
                             </div>                           
                         }
                         else

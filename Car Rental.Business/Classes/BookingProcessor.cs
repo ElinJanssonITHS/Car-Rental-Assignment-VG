@@ -2,6 +2,8 @@
 using Car_Rental.Common.Enums;
 using Car_Rental.Common.Classes;
 using Car_Rental.Common.Extensions;
+using System.Threading.Tasks;
+
 namespace Car_Rental.Business.Classes;
 public class BookingProcessor
 { 
@@ -37,13 +39,29 @@ public class BookingProcessor
     public void RentVehicle(int vehicleId, int custumerId) //TEMP
     {
         IBooking booking = _db.RentVehicle(vehicleId, custumerId);
-        _db.Add<IBooking>(booking);
+        _db.Add(booking);
     }
 
-    /*public async Task<IBooking> RentVehicle(int vehicleId, int custumerId)
+    public async Task<IBooking> RentVehicleAsync(int vehicleId, int custumerId)
     {
-        return null;
-    }*/
+        
+        try
+        {
+            await Task.Delay(10000);
+            
+            var booking = _db.RentVehicle(vehicleId, custumerId);
+
+            _db.Add(booking);
+
+            return booking;
+        }
+        catch (Exception ex) 
+        {
+            throw new Exception(ex.Message);
+            //return null;
+        }
+
+    }
 
     /*Vehicle*/
     public IVehicle? GetVehicle(int vehicleId) => _db.Single<IVehicle>(v => v.Id.Equals(vehicleId));
@@ -81,9 +99,8 @@ public class BookingProcessor
     {
         var booking = _db.ReturnVehicle(vehicleId);
         BookingExtensions.Return(booking, distance);
-        
-        
-        return booking; // temp
+        NewBooking.Distance = default;
+        return booking; // temp           
     }
 
     /*Custumer*/

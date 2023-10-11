@@ -20,15 +20,4 @@ public static class CollectionExtensions
         booking.Cost = VehicleExtensions.Duration(booking.DayOfRent, booking.DayOfReturn) * booking.Vehicle.CostDay + distance * booking.Vehicle.CostKm;
 
     }
-    /*public IVehicle ReturnVehicle(int vehicleID, double kmDriven)
-{
-    Vehicle.ChangeStatus(VehicleStatuses.Available); *
-    Vehicle.UpdateOdometer(kmDriven); *
-    DayOfReturn = DateTime.Now; *
-    _daysRented = VehicleExtensions.Duration(DayOfRent, DayOfReturn); *
-    Cost = _daysRented * vehicle.CostDay + kmDriven * vehicle.CostKm; *
-    RentalStatus = false; *
-    return Vehicle;
-}*/
-
 }
