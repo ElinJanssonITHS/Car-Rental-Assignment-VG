@@ -68,12 +68,12 @@ public class BookingProcessor
 
     public IVehicle? GetVehicle(string regNo) => _db.Single<IVehicle>(v => v.RegNo.Equals(regNo));
 
-    public void AddVehicle(string make, string registrationNumber, double odometer, double costKm, VehicleStatuses status, VehicleTypes type) 
+    public void AddVehicle(string make, string regNo, double odometer, double costKm, VehicleStatuses status, VehicleTypes type) 
     {
         ErrorMessage = string.Empty;
         try
         {
-            if (make == default || make.Trim().Length.Equals(0) || registrationNumber == default || registrationNumber.Trim().Length.Equals(0) ||
+            if (make == default || make.Trim().Length.Equals(0) || regNo == default || regNo.Trim().Length.Equals(0) ||
             odometer == default || costKm == default || type == default)
             {
                 ErrorMessage = "Could not add vehicle.";
@@ -82,9 +82,12 @@ public class BookingProcessor
             {
                 if (type == VehicleTypes.Motorcycle)
                 {
-                    _db.Add<IVehicle>(new Motorcycle(_db.NextVehicleId, make, registrationNumber.ToUpper(), odometer, costKm, status, type));
+                    _db.Add<IVehicle>(new Motorcycle(_db.NextVehicleId, make, regNo.ToUpper(), odometer, costKm, status, type));
                 }
-                _db.Add<IVehicle>(new Car(_db.NextVehicleId, make, registrationNumber.ToUpper(), odometer, costKm, status, type));
+                else
+                {
+                    _db.Add<IVehicle>(new Car(_db.NextVehicleId, make, regNo.ToUpper(), odometer, costKm, status, type));
+                }               
             }
             NewVehicle = new();
         }

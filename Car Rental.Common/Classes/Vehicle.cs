@@ -25,5 +25,7 @@ public class Vehicle : IVehicle
     #region Methods
     public void ChangeStatus(VehicleStatuses status) => Status = status;
     public virtual void UpdateOdometer(double km) => Odometer += km;
+
+   
     #endregion
 }
