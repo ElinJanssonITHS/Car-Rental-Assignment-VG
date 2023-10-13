@@ -2,7 +2,6 @@
 using Car_Rental.Common.Interfaces;
 using Car_Rental.Common.Classes;
 using System.Linq.Expressions;
-using System.Linq;
 using System.Reflection;
 using Car_Rental.Common.Extensions;
 
@@ -55,7 +54,7 @@ public class CollectionData : IData
     public List<T> Get<T>(Expression<Func<T, bool>>? expression) // Generisk metod Get<>(); KLAR
     {
         FieldInfo fieldInfo = GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic).FirstOrDefault(f => f.FieldType == typeof(List<T>));
-        if (fieldInfo != null)
+        if (fieldInfo is not null)
         {
             var list = (List<T>)fieldInfo.GetValue(this);
 

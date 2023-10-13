@@ -1,5 +1,4 @@
-﻿
-using Car_Rental.Common.Enums;
+﻿using Car_Rental.Common.Enums;
 using Car_Rental.Common.Interfaces;
 
 namespace Car_Rental.Common.Classes;
@@ -24,8 +23,6 @@ public class Vehicle : IVehicle
 
     #region Methods
     public void ChangeStatus(VehicleStatuses status) => Status = status;
-    public virtual void UpdateOdometer(double km) => Odometer += km;
-
-   
+    public virtual void UpdateOdometer(double km) => Odometer += km;  
     #endregion
 }

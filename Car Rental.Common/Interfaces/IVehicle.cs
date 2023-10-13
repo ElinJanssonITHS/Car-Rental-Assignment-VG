@@ -14,5 +14,4 @@ public interface IVehicle
     VehicleStatuses Status { get; }
     void ChangeStatus(VehicleStatuses status);
     void UpdateOdometer(double km);
-
 }

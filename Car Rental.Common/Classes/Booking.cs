@@ -1,6 +1,5 @@
 ﻿using Car_Rental.Common.Interfaces;
 using Car_Rental.Common.Enums;
-using Car_Rental.Common.Extensions;
 namespace Car_Rental.Common.Classes;
 
 public class Booking : IBooking
@@ -35,7 +34,7 @@ public class Booking : IBooking
     #endregion
 
     #region Methods
-    public void ReturnBooking(Booking booking)
+    /*public void ReturnBooking(Booking booking)
     {
         booking.Vehicle.ChangeStatus(VehicleStatuses.Available);
         booking.DayOfReturn = DateTime.Now;
@@ -50,6 +49,6 @@ public class Booking : IBooking
         Cost = _daysRented * vehicle.CostDay + kmDriven * vehicle.CostKm;
         RentalStatus = false;
         return Vehicle;
-    }
+    }*/
     #endregion
 }

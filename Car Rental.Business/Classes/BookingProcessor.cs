@@ -2,12 +2,12 @@
 using Car_Rental.Common.Enums;
 using Car_Rental.Common.Classes;
 using Car_Rental.Common.Extensions;
-using System.Threading.Tasks;
 
 namespace Car_Rental.Business.Classes;
 public class BookingProcessor
 { 
     public string ErrorMessage { get; private set; } = string.Empty;
+    public bool IsTaskRunning = false;
     public VehicleStatuses Filter { get; set; } = default;
 
     public Vehicle NewVehicle = new();
@@ -36,38 +36,9 @@ public class BookingProcessor
         return _db.Get<IBooking>(null).OrderBy(b => b.RentalStatus);
     }
 
-    public void RentVehicle(int vehicleId, int custumerId) //TEMP
-    {
-        IBooking booking = _db.RentVehicle(vehicleId, custumerId);
-        _db.Add(booking);
-    }
-
-    public async Task<IBooking> RentVehicleAsync(int vehicleId, int custumerId)
-    {
-        
-        try
-        {
-            await Task.Delay(10000);
-            
-            var booking = _db.RentVehicle(vehicleId, custumerId);
-
-            _db.Add(booking);
-
-            return booking;
-        }
-        catch (Exception ex) 
-        {
-            throw new Exception(ex.Message);
-            //return null;
-        }
-
-    }
-
     /*Vehicle*/
     public IVehicle? GetVehicle(int vehicleId) => _db.Single<IVehicle>(v => v.Id.Equals(vehicleId));
-
     public IVehicle? GetVehicle(string regNo) => _db.Single<IVehicle>(v => v.RegNo.Equals(regNo));
-
     public void AddVehicle(string make, string regNo, double odometer, double costKm, VehicleStatuses status, VehicleTypes type) 
     {
         ErrorMessage = string.Empty;
@@ -105,6 +76,26 @@ public class BookingProcessor
         NewBooking.Distance = default;
         return booking; // temp           
     }
+    public async Task<IBooking> RentVehicleAsync(int vehicleId, int custumerId)
+    {
+
+        try
+        {
+            IsTaskRunning = true;
+
+            await Task.Delay(10000);
+            var booking = _db.RentVehicle(vehicleId, custumerId);
+            _db.Add(booking);
+
+            IsTaskRunning = false;
+
+            return booking;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 
     /*Custumer*/
     public IPerson? GetPerson(string ssn) => _db.Single<IPerson>(p => p.SocialSecurityNumber.Equals(ssn));
@@ -135,8 +126,8 @@ public class BookingProcessor
             ErrorMessage = ex.Message;
         } 
     }
+
     public string[] VehicleStatusNames => _db.VehicleStatusNames;
     public string[] VehicleTypeNames => _db.VehicleTypeNames;
     public VehicleTypes GetVehicleType(string name) => _db.GetVehicleType(name);
-
 }

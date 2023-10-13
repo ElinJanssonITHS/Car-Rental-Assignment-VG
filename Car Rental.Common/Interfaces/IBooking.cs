@@ -12,7 +12,4 @@ public interface IBooking
     double OdometerBeforeRent { get; init; }
     double Cost { get; set; }
     bool RentalStatus { get; set; }
-
-    //void ReturnVehicle(IVehicle vehicle, double kmDriven);
-
 }
