@@ -34,6 +34,7 @@ public class Booking : IBooking
     #endregion
 
     #region Methods
+    /* Oanvända metoder */
     /*public void ReturnBooking(Booking booking)
     {
         booking.Vehicle.ChangeStatus(VehicleStatuses.Available);
