@@ -114,23 +114,16 @@ public class CollectionData : IData
     public IBooking RentVehicle(int vehicleId, int custumerId)
     {
         Booking booking;
-        try
+        var vehicle = Single<IVehicle>(v => v.Id == vehicleId);
+        var customer = Single<IPerson>(p => p.Id == custumerId);
+        if (customer is not null && vehicle is not null)
         {
-            var vehicle = Single<IVehicle>(v => v.Id == vehicleId);
-            var customer = Single<IPerson>(p => p.Id == custumerId);
-            if (customer is not null && vehicle is not null)
-            {
-                return booking = new(NextBookingId, customer, vehicle);
-            }
-            else
-            {
-                throw new Exception();
-            }
+            return booking = new(NextBookingId, customer, vehicle);
         }
-        catch { throw; }
-        
-        
-        throw new NotImplementedException();
+        else
+        {
+            throw new Exception("Cannot rent vehicle");
+        }
     }
 
     public IBooking ReturnVehicle(int vehicleId)

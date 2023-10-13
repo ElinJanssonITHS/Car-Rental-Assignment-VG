@@ -69,16 +69,15 @@ public class BookingProcessor
     }
 
     /*Bookings*/
-    public IBooking ReturnVehicle(int vehicleId, double distance)
+    public void ReturnVehicle(int vehicleId, double distance)
     {
         var booking = _db.ReturnVehicle(vehicleId);
         BookingExtensions.Return(booking, distance);
         NewBooking.Distance = default;
-        return booking; // temp           
+        //return booking; // temp           
     }
     public async Task<IBooking> RentVehicleAsync(int vehicleId, int custumerId)
     {
-
         try
         {
             IsTaskRunning = true;
