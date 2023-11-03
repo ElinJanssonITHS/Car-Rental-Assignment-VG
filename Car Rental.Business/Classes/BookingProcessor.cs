@@ -8,7 +8,7 @@ public class BookingProcessor
 { 
     public string ErrorMessage { get; private set; } = string.Empty;
     public bool IsTaskRunning = false;
-    public VehicleStatuses Filter { get; set; } = default;
+    public VehicleStatuses? Filter { get; set; }
 
     public Vehicle NewVehicle = new();
     public Customer NewCustomer = new();
@@ -23,13 +23,13 @@ public class BookingProcessor
     {
         return _db.Get<IPerson>(null).OrderBy(c => c.LastName);
     }
-    public IEnumerable<IVehicle> GetVehicles(VehicleStatuses status = default)
+    public IEnumerable<IVehicle> GetVehicles()
     {
-        if (status == default)
+        if (Filter == null)
         {
             return _db.Get<IVehicle>(null);
         }
-        return _db.Get<IVehicle>(v => v.Status.Equals(status));
+        return _db.Get<IVehicle>(v => v.Status.Equals(Filter));
     }
     public IEnumerable<IBooking> GetBookings()
     {
